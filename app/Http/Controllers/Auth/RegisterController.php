@@ -27,9 +27,15 @@ class RegisterController extends Controller
     {
         // Validation des données
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name'       => 'required|string|max:255',
+            'firstname'  => 'required|string|max:255',
+            'email'      => 'required|string|email|max:255|unique:users',
+            'mailpro'    => 'nullable|string|email|max:255|unique:users,mailpro',
+            'telephone'  => 'required|string|max:20|unique:users',
+            'fonction'   => 'required|string|max:50',
+            'metier'     => 'required|string|max:50',
+            'bureau'     => 'required|string|max:50',
+            'password'   => 'required|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -40,18 +46,24 @@ class RegisterController extends Controller
         }
 
         try {
-            // Création de l'utilisateur
+            // Création de l'utilisateur avec les nouveaux champs
             $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => 'user',
+                'name'       => $request->name,
+                'firstname'  => $request->firstname,
+                'email'      => $request->email,
+                'mailpro'    => $request->mailpro,
+                'telephone'  => $request->telephone,
+                'fonction'   => $request->fonction,
+                'metier'     => $request->metier,
+                'bureau'     => $request->bureau,
+                'password'   => Hash::make($request->password),
+                'role'       => 'user',
             ]);
 
             // Connexion automatique après inscription
             Auth::login($user);
 
-            // Message de succès dans la session
+            // Message de succès
             Session::flash('success', 'Inscription réussie ! Bienvenue.');
 
             return redirect()->route('dashboard'); // Redirection vers le tableau de bord
