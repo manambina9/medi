@@ -11,6 +11,18 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold text-center mb-6">Créer un compte</h2>
 
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 mb-4 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-500 text-white p-4 mb-4 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('register') }}" method="POST">
             @csrf
 

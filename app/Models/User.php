@@ -18,10 +18,18 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'name', 
+        'email', 
         'password',
+        'firstname',
+        'mailpro',
+        'telephone',
+        'fonction',
+        'metier',
+        'bureau',
+        'last_login',
     ];
+    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -33,6 +41,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+    protected $primaryKey = 'numero'; // Définit la clé primaire
+    
+    
     /**
      * Get the attributes that should be cast.
      *

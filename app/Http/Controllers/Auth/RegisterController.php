@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -15,7 +17,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('register'); // Charge la vue Blade register.blade.php
+        return view('register'); // Charge la vue register.blade.php
     }
 
     /**
@@ -31,20 +33,30 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Veuillez corriger les erreurs ci-dessous.');
         }
 
-        // Création de l'utilisateur
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password), // Hacher le mot de passe
-            'role' => 'user', // Ajout d'un rôle par défaut
-        ]);
+        try {
+            // Création de l'utilisateur
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'user',
+            ]);
 
-        // Connexion automatique après inscription
-        \Illuminate\Support\Facades\Auth::login($user);
+            // Connexion automatique après inscription
+            Auth::login($user);
 
-        return redirect()->route('dashboard'); // Redirection après inscription
+            // Message de succès dans la session
+            Session::flash('success', 'Inscription réussie ! Bienvenue.');
+
+            return redirect()->route('dashboard'); // Redirection vers le tableau de bord
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue. Veuillez réessayer.');
+        }
     }
 }

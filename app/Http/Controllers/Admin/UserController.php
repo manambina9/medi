@@ -2,36 +2,54 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;  // Assurez-vous que Request est bien importé
+use App\Models\User;
 
 class UserController extends Controller
 {
-    
-    public function index()
-    {
-        return view('admin.dashboard');
-    }
     public function user()
     {
-
-        $users = User::paginate(10); // 10 utilisateurs par page
+        $users = User::all();  // Récupère tous les utilisateurs
         return view('admin.users.index', compact('users'));
     }
-
-    // Afficher le formulaire de modification d'un utilisateur
-    public function edit($id)
+    public function dashboard()
     {
-        $user = User::findOrFail($id);
+        
+        $userCount = User::count(); // Récupère le nombre d'utilisateurs
+        return view('admin.dashboard', compact('userCount'));
+    }
+
+    // Autres méthodes...
+
+    public function edit($numero)
+    {
+        // Trouver l'utilisateur à modifier
+        $user = User::findOrFail($numero);
+
+        // Retourner la vue avec les données de l'utilisateur
         return view('admin.users.edit', compact('user'));
     }
 
-    // Mettre à jour un utilisateur
-    public function update(Request $request, $id)
+    public function update(Request $request, $numero)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());  // Assure-toi de valider les données avant
-        return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès');
+        // Valider les données
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $numero,
+            'role' => 'required|in:user,admin',
+        ]);
+
+        // Trouver l'utilisateur
+        $user = User::findOrFail($numero);
+
+        // Mettre à jour les données de l'utilisateur
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->save();
+
+        // Rediriger après la mise à jour
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
     }
 }

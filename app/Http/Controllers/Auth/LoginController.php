@@ -15,15 +15,21 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        // Validation des informations d'authentification
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended('/dashboard'); // Redirige l'utilisateur après connexion
+        if (Auth::attempt($credentials)) {
+            // Si l'utilisateur est un admin, rediriger vers le tableau de bord admin
+            if (Auth::user()->role == 'admin') {
+                return redirect()->route('admin.dashboard');  // Tableau de bord admin
+            }
+
+            // Sinon, rediriger vers le tableau de bord utilisateur
+            return redirect()->route('dashboard');  // Tableau de bord utilisateur
         }
 
-        return back()->withErrors(['email' => 'Les informations de connexion sont incorrectes']);
+        // Si l'authentification échoue, rediriger avec une erreur
+        return redirect()->back()->withErrors(['email' => 'Les informations d\'identification sont incorrectes']);
     }
+
 }
