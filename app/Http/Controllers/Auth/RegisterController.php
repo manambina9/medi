@@ -35,6 +35,7 @@ class RegisterController extends Controller
             'fonction'   => 'required|string|max:50',
             'metier'     => 'required|string|max:50',
             'bureau'     => 'required|string|max:50',
+            'role'       => 'required|string|in:Admin,Utilisateur,Superviseur', // Validation du rôle
             'password'   => 'required|string|min:6|confirmed',
         ]);
 
@@ -46,7 +47,7 @@ class RegisterController extends Controller
         }
 
         try {
-            // Création de l'utilisateur avec les nouveaux champs
+            // Création de l'utilisateur avec le champ rôle
             $user = User::create([
                 'name'       => $request->name,
                 'firstname'  => $request->firstname,
@@ -56,8 +57,8 @@ class RegisterController extends Controller
                 'fonction'   => $request->fonction,
                 'metier'     => $request->metier,
                 'bureau'     => $request->bureau,
+                'role'       => $request->role, // Stocke le rôle sélectionné
                 'password'   => Hash::make($request->password),
-                'role'       => 'user',
             ]);
 
             // Connexion automatique après inscription

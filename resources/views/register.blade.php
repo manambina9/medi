@@ -88,6 +88,15 @@
                 </select>
             </div>
 
+            <div>
+                <label class="block text-gray-700 font-medium">Rôle</label>
+                <select name="role" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Admin">Admin</option>
+                    <option value="Utilisateur">Utilisateur</option>
+                    <option value="Superviseur">Superviseur</option>
+                </select>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-gray-700 font-medium">Mot de passe</label>
