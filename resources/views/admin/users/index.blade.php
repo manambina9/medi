@@ -161,7 +161,7 @@
         <td>{{ $user->bureau }}</td>
         <td>{{ $user->last_login ? $user->last_login->format('d/m/Y H:i') : 'Jamais' }}</td>
         <td>
-            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
+            <a href="{{ route('admin.users.edit', $user->numero) }}" class="btn btn-warning">Modifier</a>
         </td>
     </tr>
     @endforeach

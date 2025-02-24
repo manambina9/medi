@@ -32,10 +32,11 @@ class UserController extends Controller
     public function edit($numero)
     {
         // Trouver l'utilisateur à modifier
-        $user = User::where('numero', $numero)->firstOrFail();
+        $user = User::where('numero',$numero)->firstOrFail();
 
         // Retourner la vue avec les données de l'utilisateur
         return view('admin.users.edit', compact('user'));
+
     }
 
     /**
