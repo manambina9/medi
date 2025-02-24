@@ -35,7 +35,7 @@ class RegisterController extends Controller
             'fonction'   => 'required|string|max:50',
             'metier'     => 'required|string|max:50',
             'bureau'     => 'required|string|max:50',
-            'role'       => 'required|string|in:Admin,Utilisateur,Superviseur', // Validation du rôle
+            'role'       => 'required|string|in:admin,user', // Validation du rôle
             'password'   => 'required|string|min:6|confirmed',
         ]);
 
