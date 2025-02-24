@@ -28,7 +28,6 @@ class User extends Authenticatable
         'metier',
         'bureau',
         'last_login',
-        'role',
     ];
     
 

@@ -17,8 +17,12 @@
             </div>
         @endif
 
-         <!-- Affichage des erreurs -->
-         @if ($errors->any())
+        @if (session('error'))
+            <div class="bg-red-500 text-white p-4 mb-4 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if ($errors->any())
             <div class="bg-red-500 text-white p-4 mb-4 rounded-lg">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -27,7 +31,6 @@
                 </ul>
             </div>
         @endif
-
 
         <form action="{{ route('register') }}" method="POST" class="space-y-4">
             @csrf
@@ -91,14 +94,6 @@
                     <option value="Med SMUR">Med SMUR</option>
                     <option value="SAMU">SAMU</option>
                     <option value="Cadre">Cadre</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-medium">Rôle</label>
-                <select name="role" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="admin">admin</option>
-                    <option value="user">user</option>
                 </select>
             </div>
 
