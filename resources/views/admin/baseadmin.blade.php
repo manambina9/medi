@@ -7,7 +7,7 @@
     <meta name="description" content="Dashboard administrateur">
     <meta name="author" content="">
 
-    <title>@yield('titre', 'Administration')</title>
+    <title>@yield('title', 'Administration')</title>
 
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
