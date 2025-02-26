@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function() {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
         Route::get('/users', [UserController::class, 'user'])->name('users.index');
-        Route::get('/users/{numero/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::get('/users/{numero}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{numero}', [UserController::class, 'update'])->name('users.update');
     });
 

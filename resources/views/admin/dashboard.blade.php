@@ -18,24 +18,27 @@
         <!-- Nouveau tableau pour afficher des données -->
         <div class="card">
             <h3>Statistiques</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nom de la statistique</th>
-                        <th>Valeur</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Nombre d'utilisateurs inscrits</td>
-                        <td>{{ $userCount }}</td> <!-- Exemple d'insertion dynamique -->
-                    </tr>
-                    <!-- Ajoutez d'autres lignes pour d'autres statistiques -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom de la statistique</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombre d'utilisateurs inscrits</td>
+                            <td>{{ $userCount }}</td> <!-- Exemple d'insertion dynamique -->
+                        </tr>
+                        <!-- Ajoutez d'autres lignes pour d'autres statistiques -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 
 <style>
     body {
@@ -73,8 +76,27 @@
         top: 60px; /* Décale la sidebar sous la navbar */
         left: 0;
         height: calc(100% - 60px); /* Limite la hauteur de la sidebar */
-        z-index: 100;
+        z-index: 150; /* Augmenté pour être au-dessus de tout overlay */
         overflow-y: auto;
+        transition: transform 0.3s ease;
+    }
+
+    /* S'assurer que tous les éléments de la sidebar sont cliquables */
+    .sidebar * {
+        position: relative;
+        z-index: 151; /* Supérieur à la sidebar elle-même */
+    }
+
+    /* Style pour l'overlay */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 149; /* Juste en-dessous de la sidebar */
+        display: block;
     }
 
     /* Contenu principal */
@@ -85,6 +107,9 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         margin-left: 300px; /* Décale encore plus le contenu pour plus d'espace */
+        transition: margin-left 0.3s ease;
+        position: relative;
+        z-index: 100; /* Inférieur à la sidebar */
     }
 
     .content h1 {
@@ -114,6 +139,7 @@
     .action-buttons {
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
     }
 
     .action-buttons a {
@@ -123,6 +149,7 @@
         text-decoration: none;
         border-radius: 4px;
         transition: background-color 0.3s ease;
+        margin-bottom: 5px;
     }
 
     .action-buttons a:hover {
@@ -130,6 +157,10 @@
     }
 
     /* Styles pour le tableau */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -163,6 +194,121 @@
     .back-link a:hover {
         text-decoration: underline;
     }
+
+    /* Toggle pour menu mobile */
+    .menu-toggle {
+        display: none;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 300;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    /* Media queries pour la responsivité */
+    @media (max-width: 991px) {
+        .menu-toggle {
+            display: block;
+        }
+
+        .sidebar {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .content {
+            margin-left: 0;
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .card {
+            padding: 10px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-buttons a {
+            width: 100%;
+            text-align: center;
+        }
+
+        table th, table td {
+            padding: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content h1 {
+            font-size: 20px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+        }
+    }
 </style>
 
+<script>
+    // Script amélioré pour le toggle du menu sur mobile avec overlay
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                
+                // Gestion de l'overlay
+                if (sidebar.classList.contains('active')) {
+                    // Créer un overlay seulement s'il n'existe pas déjà
+                    if (!document.querySelector('.sidebar-overlay')) {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'sidebar-overlay';
+                        document.body.appendChild(overlay);
+                        
+                        // L'overlay ferme le menu quand on clique dessus
+                        overlay.addEventListener('click', function() {
+                            sidebar.classList.remove('active');
+                            overlay.remove();
+                        });
+                    }
+                } else {
+                    // Supprimer l'overlay quand on ferme le menu
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    if (overlay) {
+                        overlay.remove();
+                    }
+                }
+            });
+        }
+        
+        // S'assurer que tous les liens de la sidebar sont cliquables
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        sidebarLinks.forEach(link => {
+            link.style.position = 'relative';
+            link.style.zIndex = '155'; // Augmenter encore le z-index des liens
+            
+            // Ajouter un effet visuel au survol pour confirmer qu'ils sont cliquables
+            link.addEventListener('mouseover', function() {
+                this.style.opacity = '0.8';
+            });
+            
+            link.addEventListener('mouseout', function() {
+                this.style.opacity = '1';
+            });
+        });
+    });
+</script>
 @endsection

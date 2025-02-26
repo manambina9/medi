@@ -19,11 +19,13 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         overflow: hidden;
+        top: 60px;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
+        table-layout: auto;
     }
 
     thead {
@@ -78,14 +80,6 @@
         transform: scale(1.05);
     }
 
-    .action-links a:active {
-        background-color: #004085;
-    }
-
-    .action-links a i {
-        margin-right: 5px;
-    }
-
     .pagination {
         margin-top: 20px;
         text-align: center;
@@ -105,31 +99,26 @@
         background-color: #0056b3;
     }
 
-    /* Ajustements pour la navigation à côté */
     .container {
-        margin-left: 300px
-        ;  /* Espace laissé pour la sidebar */
+        margin-left: 300px;  /* Espace laissé pour la sidebar */
     }
 
-    /* Responsive design pour les petits écrans */
     @media screen and (max-width: 768px) {
         .container {
-            margin-left: 0; /* Retire le décalage pour les petits écrans */
+            margin-left: 0;
             width: 100%;
             padding: 15px;
         }
-
-        table {
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 10px 15px;
-        }
-
-        .action-links a {
-            font-size: 12px;
-            padding: 6px 12px;
+        
+        th:nth-child(5),
+        th:nth-child(6),
+        th:nth-child(7),
+        th:nth-child(8),
+        td:nth-child(5),
+        td:nth-child(6),
+        td:nth-child(7),
+        td:nth-child(8) {
+            display: none;
         }
     }
 </style>
@@ -139,9 +128,9 @@
     <thead>
     <tr>
         <th>Nom</th>
-        <th>Email</th>
-        <th>Numéro</th>
         <th>Prénom</th>
+        <th>Numéro</th>
+        <th>Email</th>
         <th>Fonction</th>
         <th>Métier</th>
         <th>Bureau</th>
@@ -153,25 +142,22 @@
     @foreach ($users as $user)
     <tr>
         <td>{{ $user->name }}</td>
-        <td>{{ $user->email }}</td>
-        <td>{{ $user->numero }}</td>
         <td>{{ $user->firstname }}</td>
+        <td>{{ $user->numero }}</td>
+        <td>{{ $user->email }}</td>
         <td>{{ $user->fonction }}</td>
         <td>{{ $user->metier }}</td>
         <td>{{ $user->bureau }}</td>
         <td>{{ $user->last_login ? $user->last_login->format('d/m/Y H:i') : 'Jamais' }}</td>
         <td>
-            <a href="{{ route('admin.users.edit', $user->numero) }}" class="btn btn-warning">Modifier</a>
+            <a href="{{ route('admin.users.edit', ['numero' => $user->numero]) }}">Modifier</a>
         </td>
     </tr>
     @endforeach
 </tbody>
-
     </table>
 
     <div class="pagination">
-        <!-- Exemple de pagination (si tu utilises la pagination) -->
     </div>
 </div>
-
 @endsection
