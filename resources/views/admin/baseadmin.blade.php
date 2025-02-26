@@ -511,11 +511,7 @@
         @yield('content')
 
         <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <span>&copy; {{ date('Y') }} Tous droits réservés</span>
-            </div>
-        </footer>
+        
     </div>
 
     <!-- Scroll to Top Button-->

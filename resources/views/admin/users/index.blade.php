@@ -20,6 +20,7 @@
         border-radius: 8px;
         overflow: hidden;
         top: 60px;
+        margin-left: 220px;  /* Espace laissé pour la sidebar */
     }
 
     table {
@@ -35,7 +36,7 @@
     }
 
     th, td {
-        padding: 16px 20px;
+        padding: 12px 15px;  /* Réduction du padding */
         text-align: left;
         border-bottom: 1px solid #ddd;
         font-size: 14px;
@@ -66,12 +67,12 @@
 
     .action-links a {
         display: inline-block;
-        padding: 8px 14px;
+        padding: 6px 12px;  /* Réduction de la taille du bouton */
         background-color: #007bff;
         color: white;
         text-decoration: none;
         border-radius: 4px;
-        font-size: 13px;
+        font-size: 12px;  /* Réduction de la taille de la police */
         transition: background-color 0.3s, transform 0.3s;
     }
 
@@ -99,65 +100,78 @@
         background-color: #0056b3;
     }
 
-    .container {
-        margin-left: 300px;  /* Espace laissé pour la sidebar */
-    }
-
     @media screen and (max-width: 768px) {
         .container {
             margin-left: 0;
             width: 100%;
             padding: 15px;
         }
-        
+
+        th, td {
+            padding: 10px 12px;  /* Réduction du padding pour les petits écrans */
+            font-size: 12px;  /* Réduction de la taille de la police */
+        }
+
+        th:nth-child(2),  /* Masquer la colonne "Prénom" */
         th:nth-child(5),
         th:nth-child(6),
         th:nth-child(7),
         th:nth-child(8),
+        td:nth-child(2),  /* Masquer la colonne "Prénom" */
         td:nth-child(5),
         td:nth-child(6),
         td:nth-child(7),
         td:nth-child(8) {
             display: none;
         }
+
+        .action-links {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .action-links a {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 
 <div class="container">
     <table>
-    <thead>
-    <tr>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Numéro</th>
-        <th>Email</th>
-        <th>Fonction</th>
-        <th>Métier</th>
-        <th>Bureau</th>
-        <th>Dernière connexion</th>
-        <th>Actions</th>
-    </tr>
-</thead>
-<tbody>
-    @foreach ($users as $user)
-    <tr>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->firstname }}</td>
-        <td>{{ $user->numero }}</td>
-        <td>{{ $user->email }}</td>
-        <td>{{ $user->fonction }}</td>
-        <td>{{ $user->metier }}</td>
-        <td>{{ $user->bureau }}</td>
-        <td>{{ $user->last_login ? $user->last_login->format('d/m/Y H:i') : 'Jamais' }}</td>
-        <td>
-            <a href="{{ route('admin.users.edit', ['numero' => $user->numero]) }}">Modifier</a>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Numéro</th>
+                <th>Email</th>
+                <th>Fonction</th>
+                <th>Métier</th>
+                <th>Bureau</th>
+                <th>Dernière connexion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->firstname }}</td>
+                <td>{{ $user->numero }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->fonction }}</td>
+                <td>{{ $user->metier }}</td>
+                <td>{{ $user->bureau }}</td>
+                <td>{{ $user->last_login ? $user->last_login->format('d/m/Y H:i') : 'Jamais' }}</td>
+                <td class="action-links">
+                    <a href="{{ route('admin.users.edit', ['numero' => $user->numero]) }}">Modifier</a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
     </table>
-
     <div class="pagination">
+        <!-- Pagination links here -->
     </div>
 </div>
 @endsection
