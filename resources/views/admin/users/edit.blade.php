@@ -1,6 +1,6 @@
 @extends('admin.baseadmin')
 
-@section('titre', 'Modifier utilisateur')
+@section('title', 'Modifier utilisateur')
 
 @section('content')
 <style>
